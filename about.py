@@ -48,7 +48,7 @@ layout = dbc.Container([
             html.P(
                 "Полный код данного дашборда Вы можете найти по кнопке ниже."
             ),
-            dbc.Button("Перейти к репозиторию на GitHub", color="primary", href="Текст", target="_blank"),
+            dbc.Button("Перейти к репозиторию на GitHub", color="primary", href="https://github.com/PanamCU/RussianAlcoholDashboard", target="_blank"),
         ]), width=12)
     ])
 ], style={'padding': '20px'})
