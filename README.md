@@ -61,5 +61,5 @@
 
 ## Установка и использование
 1. **Клонирование репозитория**:
-   git clone https://github.com/yourusername/alcohol-consumption-dashboard.git
-   cd alcohol-consumption-dashboard
+   git clone https://github.com/PanamCU/RussianAlcoholDashboard.git
+   cd RussianAlcoholDashboard
