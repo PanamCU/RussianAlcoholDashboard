@@ -55,31 +55,50 @@ def update_graphs(selected_year):
     filtered_df = df[df['year'] == selected_year]
 
     top_regions = filtered_df[['region', 'total_alcohol']].nlargest(10, 'total_alcohol')
-    top_regions_pie_chart = px.pie(top_regions, names='region', values='total_alcohol', title='Топ 10 регионов по потреблению алкоголя')
+    top_regions_pie_chart = px.pie(top_regions, names='region', values='total_alcohol', title='Топ 10 регионов по потреблению алкоголя (Литры)')
     top_regions_pie_chart.update_layout(height=380)
+    top_regions_pie_chart.update_traces(
+        textinfo='value',
+        hovertemplate='Регион: %{label}<br>Потребление алкоголя: %{value}',
+        textposition='inside'
+    )
 
     avg_indicators = filtered_df[['wine', 'beer', 'vodka', 'champagne', 'brandy']].mean().reset_index()
     avg_indicators.columns = ['alcohol', 'average']
+    avg_indicators['alcohol'] = avg_indicators['alcohol'].replace({
+        'wine': 'Вино',
+        'beer': 'Пиво',
+        'vodka': 'Водка',
+        'champagne': 'Шампанское',
+        'brandy': 'Бренди'
+    })
     average_indicators_bar = px.bar(avg_indicators, x='average', y='alcohol', orientation='h', title='Средние показатели по России за выбранный год')
-    average_indicators_bar.update_layout(height=365)
+    average_indicators_bar.update_layout(height=365, xaxis_title='Среднее потребление, л', yaxis_title='Тип алкоголя')
+
 
     top_urbanization = filtered_df[['region', 'urbanization', 'birth_rate', 'death_rate']].nlargest(10, 'urbanization')
-    top_urbanization_bar = px.bar(top_urbanization.melt(id_vars='region', value_vars=['urbanization', 'birth_rate', 'death_rate']),
-                                  x='region', y='value', color='variable', barmode='group',
-                                  title='Топ 10 регионов по урбанизации, включая рождаемость и смертность')
-    top_urbanization_bar.update_layout(height=400)
+    top_urbanization = top_urbanization.rename(columns={
+        'urbanization': 'Урбанизация',
+        'birth_rate': 'Рождаемость',
+        'death_rate': 'Смертность'
+    })
+    top_urbanization_bar = px.bar(top_urbanization.melt(id_vars='region', value_vars=['Урбанизация', 'Рождаемость', 'Смертность'],
+                                                        var_name='Показатель', value_name='Значение'),
+                                                        x='region', y='Значение', color='Показатель', barmode='group',
+                                                        title='Топ 10 регионов по урбанизации, включая рождаемость и смертность')
+    top_urbanization_bar.update_layout(height=400, xaxis_title='Регион', yaxis_title='Значение')
 
     top_urbanization = top_urbanization.merge(filtered_df[['region', 'total_alcohol']], on='region')
 
     scatter_urbanization_alcohol = px.scatter(
         top_urbanization,
-        x='urbanization',
+        x='Урбанизация',
         y='total_alcohol',
         text='region',
         title='Урбанизация vs Потребление алкоголя в топ 10 регионах по урбанизации',
-        labels={'urbanization': 'Урбанизация', 'total_alcohol': 'Потребление алкоголя'}
+        labels={'total_alcohol': 'Потребление алкоголя'}
     )
     scatter_urbanization_alcohol.update_traces(marker=dict(size=12), textposition='top center')
-    scatter_urbanization_alcohol.update_layout(height=400)
+    scatter_urbanization_alcohol.update_layout(height=400, xaxis_title='Урбанизация', yaxis_title='Потребление алкоголя, л')
 
     return top_regions_pie_chart, average_indicators_bar, top_urbanization_bar, scatter_urbanization_alcohol

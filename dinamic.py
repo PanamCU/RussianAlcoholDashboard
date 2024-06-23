@@ -48,19 +48,19 @@ layout = dbc.Container([
 def update_graphs(selected_region):
     filtered_df = df[df['region'] == selected_region]
 
-    beer_fig = px.line(filtered_df, x='year', y='beer', title='Потребление пива')
+    beer_fig = px.line(filtered_df, x='year', y='beer', title='Потребление пива', labels={'beer': "Продажи, л", 'year': 'Год'})
     beer_fig.update_layout(height=350)
 
-    wine_fig = px.line(filtered_df, x='year', y='wine', title='Потребление вина')
+    wine_fig = px.line(filtered_df, x='year', y='wine', title='Потребление вина', labels={'wine': "Продажи, л", 'year': 'Год'})
     wine_fig.update_layout(height=350)
 
-    brandy_fig = px.line(filtered_df, x='year', y='brandy', title='Потребление бренди')
+    brandy_fig = px.line(filtered_df, x='year', y='brandy', title='Потребление бренди', labels={'brandy': "Продажи, л", 'year': 'Год'})
     brandy_fig.update_layout(height=350)
 
-    vodka_fig = px.line(filtered_df, x='year', y='vodka', title='Потребление водки')
+    vodka_fig = px.line(filtered_df, x='year', y='vodka', title='Потребление водки', labels={'vodka': "Продажи, л", 'year': 'Год'})
     vodka_fig.update_layout(height=350)
 
-    champagne_fig = px.line(filtered_df, x='year', y='champagne', title='Потребление шампанского')
+    champagne_fig = px.line(filtered_df, x='year', y='champagne', title='Потребление шампанского', labels={'champagne': "Продажи, л", 'year': 'Год'})
     champagne_fig.update_layout(height=350)
 
     return beer_fig, wine_fig, brandy_fig, vodka_fig, champagne_fig

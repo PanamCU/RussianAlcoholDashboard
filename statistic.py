@@ -54,18 +54,27 @@ layout = dbc.Container([
 def update_demographic_graphs(selected_region, selected_year):
     filtered_df = df[df['region'] == selected_region]
 
-    alcohol_consumption_fig = px.bar(filtered_df, x='year', y=['wine', 'beer', 'vodka', 'champagne', 'brandy'],
-                                     title='Потребление алкоголя на протяжении 18-ти лет', barmode='group')
+    filtered_df = filtered_df.rename(columns={
+        'wine': 'Вино',
+        'beer': 'Пиво',
+        'vodka': 'Водка',
+        'champagne': 'Шампанское',
+        'brandy': 'Бренди'
+    })
+
+    alcohol_consumption_fig = px.bar(filtered_df, x='year', y=['Вино', 'Пиво', 'Водка', 'Шампанское', 'Бренди'],
+                                     title='Потребление алкоголя на протяжении 18-ти лет', barmode='group', labels={'value': 'Продажи, л', 'year': 'Год', 'variable': 'Алкогольный напиток'})
     alcohol_consumption_fig.update_layout(height=370)
 
     latest_data = filtered_df[filtered_df['year'] == selected_year]
-    alcohol_pie_data = latest_data[['wine', 'beer', 'vodka', 'champagne', 'brandy']].melt(var_name='alcohol', value_name='consumption')
+    alcohol_pie_data = latest_data.melt(id_vars=['region', 'year'], value_vars=['Вино', 'Пиво', 'Водка', 'Шампанское', 'Бренди'],
+                                        var_name='alcohol', value_name='consumption')
     alcohol_consumption_pie_chart = px.pie(alcohol_pie_data, names='alcohol', values='consumption', title=f'Потребление алкоголя в {selected_year}')
     alcohol_consumption_pie_chart.update_layout(height=350)
 
     filtered_df = filtered_df.sort_values(by='death_rate')
     birth_death_rate_scatter = px.scatter(filtered_df, x='birth_rate', y='death_rate', size='urbanization', color='year',
-                                          title='Отношение рождаемости к смертности', labels={'birth_rate': 'Birth Rate', 'death_rate': 'Death Rate', 'urbanization': 'Urbanization'})
+                                          title='Отношение рождаемости к смертности', labels={'birth_rate': 'Рождаемость', 'death_rate': 'Смертность', 'urbanization': 'Урбанизация', 'year': 'Год'})
     birth_death_rate_scatter.update_layout(height=350)
 
     return alcohol_consumption_fig, alcohol_consumption_pie_chart, birth_death_rate_scatter

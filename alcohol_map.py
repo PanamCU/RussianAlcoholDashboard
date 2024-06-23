@@ -86,6 +86,14 @@ layout = dbc.Container([
 def update_choropleth(indication, year):
     filtered_df = df[df['year'] == year]
 
+    translation_dict = {
+    "wine": "вина",
+    "beer": "пива",
+    "vodka": "водки",
+    "champagne": "шампанского",
+    "brandy": "бренди"
+    }
+
     figure = px.choropleth_mapbox(
         filtered_df,
         geojson=counties,
@@ -98,7 +106,7 @@ def update_choropleth(indication, year):
         opacity=0.5,
         hover_name='region',
         hover_data={'region': True, 'cartodb_id': False, indication: True},
-        labels={indication: f'Потребление {indication}'}
+        labels={indication: f'Продажи {translation_dict[indication]}, л'}
     )
 
     figure.update_layout(
