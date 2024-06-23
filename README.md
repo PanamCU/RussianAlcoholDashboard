@@ -61,5 +61,6 @@
 
 ## Установка и использование
 1. **Клонирование репозитория**:
+   ```bash
    git clone https://github.com/PanamCU/RussianAlcoholDashboard.git
    cd RussianAlcoholDashboard
