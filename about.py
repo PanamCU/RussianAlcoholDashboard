@@ -17,7 +17,7 @@ layout = dbc.Container([
                 "Данные включают год, регион, а также количество потребленного вина, пива, водки, шампанского и бренди. "
                 "Датасет был модернизирован, в следствие чего в него была добавлена информация о рождаемости, смертности и урбанизации. "
             ),
-            dbc.Button("Перейти к датасету", color="primary", href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSoyK9eyj_TExI_VFNgV5FRZdFJk-KHvXXaMLqWw3s_EibSOZdOxFEGz2UIoIXg8xfw2EEtLtWTQb0r/pub?gid=110125304&single=true&output=csv", target="_blank"),
+            dbc.Button("Скачать датасет", color="primary", href="https://docs.google.com/spreadsheets/d/e/2PACX-1vTTYt1uMLU8_Tj0jtrBjdaz1I0U4y_2m4vHGjLJ8OWStP9AuntfQfd00D8zvkcit93OK5ysSIBTlSY2/pub?gid=1669335283&single=true&output=csv", target="_blank"),
             html.P(" "),
             html.Hr(style={'color': 'black'}),
             html.H5("Общая информация о дашборде"),
