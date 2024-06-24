@@ -10,6 +10,7 @@ df['total_alcohol'] = df[['wine', 'beer', 'vodka', 'champagne', 'brandy']].sum(a
 df['urbanization'] = pd.to_numeric(df['urbanization'], errors='coerce')
 df['birth_rate'] = pd.to_numeric(df['birth_rate'], errors='coerce')
 df['death_rate'] = pd.to_numeric(df['death_rate'], errors='coerce')
+df['population'] = pd.to_numeric(df['population'], errors='coerce')
 
 all_regions = df['region'].unique()
 all_years = df['year'].unique()
@@ -76,7 +77,7 @@ def update_graphs(selected_year):
     average_indicators_bar.update_layout(height=365, xaxis_title='Среднее потребление, л', yaxis_title='Тип алкоголя')
 
 
-    top_urbanization = filtered_df[['region', 'urbanization', 'birth_rate', 'death_rate']].nlargest(10, 'urbanization')
+    top_urbanization = filtered_df[['region', 'urbanization', 'birth_rate', 'death_rate', 'population']].nlargest(10, 'urbanization')
     top_urbanization = top_urbanization.rename(columns={
         'urbanization': 'Урбанизация',
         'birth_rate': 'Рождаемость',
@@ -93,12 +94,14 @@ def update_graphs(selected_year):
     scatter_urbanization_alcohol = px.scatter(
         top_urbanization,
         x='Урбанизация',
-        y='total_alcohol',
-        text='region',
-        title='Урбанизация vs Потребление алкоголя в топ 10 регионах по урбанизации',
-        labels={'total_alcohol': 'Потребление алкоголя'}
+        y='population',
+        size='total_alcohol',
+        size_max=7,
+        color='region',
+        title='Урбанизация vs Население, включая потребление алкоголя (в топ 10 регионах по урбанизации)',
+        labels={'population': 'Население, тыс.', 'region': 'Регион', 'total_alcohol': 'Потребление, л'}
     )
-    scatter_urbanization_alcohol.update_traces(marker=dict(size=12), textposition='top center')
-    scatter_urbanization_alcohol.update_layout(height=400, xaxis_title='Урбанизация', yaxis_title='Потребление алкоголя, л')
+    scatter_urbanization_alcohol.update_traces(marker=dict(sizemode='diameter'), textposition='top center')
+    scatter_urbanization_alcohol.update_layout(height=400, xaxis_title='Урбанизация', yaxis_title='Население, тыс.')
 
     return top_regions_pie_chart, average_indicators_bar, top_urbanization_bar, scatter_urbanization_alcohol
